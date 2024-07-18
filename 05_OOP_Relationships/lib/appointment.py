@@ -1,6 +1,4 @@
-import datetime
-
-
+from datetime import datetime
 class Appointment:
     all = []
 
@@ -39,6 +37,32 @@ class Appointment:
             self._patient = patient_instance
         else:
             raise TypeError("patients must be of type patient")
+
+    @classmethod
+    def filter_past_two_appointments(cls):
+        # figure out current date
+        today_date = datetime.now().date()
+        # capture all the appointments whose dates respect the condition
+        # filtered_appts = []
+        # for appt in cls.all:
+        #     if today_date > datetime.strptime(appt.date, "%m/%d/%y").date():
+        #         filtered_appts.append(appt)
+        # return filtered_appts
+        filtered_appointments =  [
+            appt
+            for appt in cls.all
+            if today_date > datetime.strptime(appt.date, "%m/%d/%y").date()
+        ]
+        if sorted_list := sorted(filtered_appointments, key=lambda appt: appt.date, reverse=True):
+            return len(sorted_list) > 1 and sorted_list[:2]
+
+    @classmethod
+    def future_appointments(cls):
+        filtered_list = list(set(cls.all) - set(cls.filter_past_appointments()))
+        return sorted(
+            filtered_list,
+            key=lambda appt: appt.date,
+        )
 
     def __repr__(self):
         """this method returns the official representation of the object"""

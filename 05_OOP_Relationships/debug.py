@@ -45,7 +45,7 @@ rosenbaum = Doctor("Dr. Rosenbaum", "Gynocology")
 williams = Doctor("Dr. Williams", "Oncology")
 
 
-a1 = Appointment("Stomach issues.", "5/25/23", rosenbaum, may)
+# a1 = Appointment("Stomach issues.", "5/25/23", rosenbaum, may)
 a2 = Appointment(
     "Non-stop migrains",
     "5/26/23",
@@ -58,14 +58,19 @@ a3 = Appointment(
     williams,
     jimmy,
 )
-a4 = Appointment(
-    "Feels light-headed when jogging",
-    "5/12/24",
-    williams,
-    patty,
-)
-a5 = Appointment("Can't keep food down", "8/30/24", rosenbaum, may)
-
+# a5 = Appointment("Can't keep food down", "8/30/24", rosenbaum, may)
+# a4 = Appointment(
+#     "Feels light-headed when jogging",
+#     "7/30/24",
+#     williams,
+#     patty,
+# )
+# a4 = Appointment(
+#     "Feels light-headed when jogging",
+#     "8/12/24",
+#     williams,
+#     patty,
+# )
 
 import ipdb
 
