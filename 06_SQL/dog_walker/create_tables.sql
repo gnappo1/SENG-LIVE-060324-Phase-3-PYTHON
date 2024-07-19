@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS handlers;
+DROP TABLE IF EXISTS dogs;
+DROP TABLE IF EXISTS owners;
+DROP TABLE IF EXISTS appointments;
+
 CREATE TABLE IF NOT EXISTS owners(
     id INTEGER PRIMARY KEY,
     name TEXT,
@@ -12,8 +17,6 @@ CREATE TABLE IF NOT EXISTS dogs(
     breed TEXT,
     age INTEGER,
     owner_id INTEGER,
-    favorite_treats TEXT,
-    image_url TEXT
     FOREIGN KEY (owner_id) REFERENCES owners(id)
 );
 
@@ -36,8 +39,11 @@ CREATE TABLE IF NOT EXISTS appointments(
 
 -- Add columns to existing tables
 -- ALTER TABLE dogs ADD COLUMN favorite_treats TEXT;
+ALTER TABLE dogs ADD favorite_treats TEXT;
 -- ALTER TABLE dogs ADD COLUMN last_fed DATETIME;
+ALTER TABLE dogs ADD last_fed DATETIME;
 -- ALTER TABLE dogs ADD COLUMN image_url TEXT;
+ALTER TABLE dogs ADD image_url TEXT;
 
 -- Drop tables
 -- DROP TABLE owners;
