@@ -85,16 +85,91 @@ class Pet(Helper): #mixin
         pet = cls(name, species, breed, temperament)
         #! now persist to the db using save()
         pet.save()
-        # return pet
+        return pet
 
     # ✅ 6. Add "update" Instance Method to Update the db based on its Attributes
+    def update(self):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    f"""
+                        UPDATE {type(self).pascal_to_camel_plural()}
+                        SET name=?, species=?, breed=?, temperament=?
+                        WHERE
+                        id = ?;
+                    """, (self.name, self.species, self.breed, self.temperament, self.id)
+                )
+                #! make sure you update the memoized object in the all_ dict
+                type(self).all_[self.id] = self
+        # except sqlite3.OperationalError as e:
+        #     print(e)
+        except sqlite3.IntegrityError as e:
+            return e
 
-    # ✅ 7. Add "new_from_db" Class Method to Retrieve Newest "pet" Instance w/ Attributes From DB
+    def delete(self):
+        try:
+            with CONN:
+                CURSOR.execute(
+                    f"""
+                        DELETE FROM {type(self).pascal_to_camel_plural()}
+                        WHERE id = ?
+                    """, (self.id, )
+                )
+
+                del type(self).all_[self.id]
+        # except sqlite3.OperationalError as e:
+        #     print(e)
+        except sqlite3.IntegrityError as e:
+            return e
+    # ✅ 7. Add "new_from_db" Class Method to instantiate a new object out of a db row
+    @classmethod
+    def new_from_db(cls, row_of_data):
+        return cls(
+            row_of_data[1],
+            row_of_data[2],
+            row_of_data[3],
+            row_of_data[4],
+            row_of_data[0],
+        )
 
     # ✅ 8. Add "get_all" Class Method to Retrieve All "pet" Instances From DB
+    @classmethod
+    def get_all(cls):
+        try:
+            with CONN:
+                query = CURSOR.execute(
+                    f"""
+                        SELECT * FROM {cls.pascal_to_camel_plural()};
+                    """,
+                )
+                rows = query.fetchall()
+                return [cls.new_from_db(row) for row in rows]
+
+        # except sqlite3.OperationalError as e:
+        #     print(e)
+        except sqlite3.IntegrityError as e:
+            return e
 
     # ✅ 9. Add "find_by_name" Class Method to Retrieve "pet" Instance by "name" Attribute From DB
+    @classmethod
+    def find_by_name(cls, name):
+        try:
+            with CONN:
+                query = CURSOR.execute(
+                    f"""
+                        SELECT * FROM {cls.pascal_to_camel_plural()}
+                        WHERE name = ?
+                        LIMIT 1;
+                    """, (name.lower(), )
+                )
+                result = query.fetchone()
+                return cls.new_from_db(result) if result else None
 
+
+        # except sqlite3.OperationalError as e:
+        #     print(e)
+        except sqlite3.IntegrityError as e:
+            return e
     # If No "pet" Found, return "None"
 
     # ✅ 10. Add "find_by_id" Class Method to Retrieve "pet" Instance by "id" Attribute From DB

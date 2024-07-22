@@ -9,7 +9,12 @@ from pet import Pet, CONN as pet_conn, CURSOR as pet_cursor
 
 Pet.drop_table()
 Pet.create_table()
-spot = Pet.create("fido", "dog", "chihuahua", "feisty")
+milo = Pet.create("milo", "dog", "husky", "moody")
+fid = Pet.create("fido", "dog", "chihuahua", "feisty")
+# spot.name = "Spok"
+# spot.update()
 # spot.save()
+# spot.delete()
+fido = Pet.find_by_name("Fidoz")
 
 import ipdb; ipdb.set_trace()
