@@ -7,6 +7,8 @@ from classes.appointment import Appointment
 from random import sample
 from faker import Faker
 fake = Faker()
+import requests
+
 
 SPECIALTIES = [
     'Allergy and immunology',

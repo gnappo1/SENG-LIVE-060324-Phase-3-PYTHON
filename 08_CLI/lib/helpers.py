@@ -1,6 +1,5 @@
 import re
 
-
 def welcome():
     print("Welcome to the Python CLI Project Template!")
 
@@ -28,8 +27,7 @@ def menu():
 
 
 def list_doctors():
-    doctors = Doctor.get_all()
-    if doctors:
+    if doctors := Doctor.get_all():
         for doctor in doctors:
             print(doctor)
     else:

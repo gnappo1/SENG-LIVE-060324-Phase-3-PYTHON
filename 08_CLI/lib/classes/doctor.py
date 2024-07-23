@@ -71,7 +71,7 @@ class Doctor:
         return [Appointment(row[1], row[2], row[3], row[4], row[0]) for row in rows]
 
     def patients(self):
-        return list({appt.patient for appt in self.appointments()})
+        return list({appt.patient() for appt in self.appointments()})
 
     #! Helper Methods
 
@@ -79,17 +79,20 @@ class Doctor:
 
     @classmethod
     def create_table(cls):
-        CURSOR.execute(
+        try:
+            CURSOR.execute(
+                """
+                CREATE TABLE IF NOT EXISTS doctors (
+                    id INTEGER PRIMARY KEY,
+                    full_name TEXT,
+                    phone_number TEXT,
+                    specialty TEXT
+                );
             """
-            CREATE TABLE IF NOT EXISTS doctors (
-                id INTEGER PRIMARY KEY,
-                full_name TEXT,
-                phone_number TEXT,
-                specialty TEXT
-            );
-        """
-        )
-        CONN.commit()
+            )
+            CONN.commit()
+        except Exception as e:
+            return e
 
     @classmethod
     def drop_table(cls):
